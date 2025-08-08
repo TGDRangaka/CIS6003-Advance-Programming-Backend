@@ -15,7 +15,9 @@ public class Customer implements Entity {
     private boolean isDeleted;
     private String userId;
 
-    private Customer(Builder builder) {
+    public Customer() {}
+
+    public Customer(Builder builder) {
         this.accountNumber = builder.accountNumber;
         this.name = builder.name;
         this.email = builder.email;

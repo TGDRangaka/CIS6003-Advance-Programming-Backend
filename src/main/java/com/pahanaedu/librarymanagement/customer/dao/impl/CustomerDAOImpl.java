@@ -16,7 +16,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     private static final String DELETE_CUSTOMER_SQL = "DELETE FROM customer WHERE accountNumber = ?";
 
     @Override
-    public void addCustomer(Customer customer) {
+    public void addCustomer(Customer customer) throws SQLException {
         try (Connection conn = DatabaseConfig.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(ADD_CUSTOMER_SQL)) {
             stmt.setString(1, customer.getAccountNumber());
@@ -28,18 +28,15 @@ public class CustomerDAOImpl implements CustomerDAO {
             stmt.setBoolean(7, customer.isDeleted());
             stmt.setString(8, customer.getUserId());
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
     @Override
     public Customer getCustomerById(int id) {
-        // This method is obsolete now, as you don't have "id"
         throw new UnsupportedOperationException("Use getCustomerByAccountNumber instead");
     }
 
-    public Customer getCustomerByAccountNumber(String accountNumber) {
+    public Customer getCustomerByAccountNumber(String accountNumber) throws SQLException {
         try (Connection conn = DatabaseConfig.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(GET_CUSTOMER_BY_ACCOUNT_SQL)) {
             stmt.setString(1, accountNumber);
@@ -56,14 +53,12 @@ public class CustomerDAOImpl implements CustomerDAO {
                         .userId(rs.getString("userId"))
                         .build();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public List<Customer> getAllCustomers() {
+    public List<Customer> getAllCustomers() throws SQLException {
         List<Customer> customers = new ArrayList<>();
         try (Connection conn = DatabaseConfig.getInstance().getConnection();
              Statement stmt = conn.createStatement()) {
@@ -80,14 +75,12 @@ public class CustomerDAOImpl implements CustomerDAO {
                         .userId(rs.getString("userId"))
                         .build());
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return customers;
     }
 
     @Override
-    public void updateCustomer(Customer customer) {
+    public void updateCustomer(Customer customer) throws SQLException {
         try (Connection conn = DatabaseConfig.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(UPDATE_CUSTOMER_SQL)) {
             stmt.setString(1, customer.getName());
@@ -99,24 +92,19 @@ public class CustomerDAOImpl implements CustomerDAO {
             stmt.setString(7, customer.getUserId());
             stmt.setString(8, customer.getAccountNumber());
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 
     @Override
     public void deleteCustomer(int id) {
-        // Obsolete - no longer using int ID
         throw new UnsupportedOperationException("Use deleteCustomerByAccountNumber instead");
     }
 
-    public void deleteCustomerByAccountNumber(String accountNumber) {
+    public void deleteCustomerByAccountNumber(String accountNumber) throws SQLException {
         try (Connection conn = DatabaseConfig.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(DELETE_CUSTOMER_SQL)) {
             stmt.setString(1, accountNumber);
             stmt.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 }
