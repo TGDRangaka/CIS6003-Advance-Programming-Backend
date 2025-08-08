@@ -11,7 +11,6 @@ public class DatabaseConfig {
     private static final String DB_PASSWORD = "1234";
 
     private static final DatabaseConfig instance = new DatabaseConfig();
-    private static Connection connection;
 
     private DatabaseConfig() {
         try {
@@ -22,8 +21,6 @@ public class DatabaseConfig {
             tempConnection.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS " + DB_NAME);
             tempConnection.close();
 
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException("Error initializing database!", e);
         }
@@ -33,7 +30,7 @@ public class DatabaseConfig {
         return instance;
     }
 
-    public Connection getConnection() {
-        return connection;
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 }
