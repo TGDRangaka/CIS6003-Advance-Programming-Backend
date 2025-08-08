@@ -1,8 +1,11 @@
 package com.pahanaedu.librarymanagement.customer.model;
 
+import com.pahanaedu.librarymanagement.schema.Entity;
+
+import java.sql.Connection;
 import java.time.LocalDateTime;
 
-public class Customer {
+public class Customer implements Entity {
     private String accountNumber;
     private String name;
     private String email;
@@ -12,18 +15,70 @@ public class Customer {
     private boolean isDeleted;
     private String userId;
 
-    public Customer() {
+    private Customer(Builder builder) {
+        this.accountNumber = builder.accountNumber;
+        this.name = builder.name;
+        this.email = builder.email;
+        this.phoneNumber = builder.phoneNumber;
+        this.unitConsumed = builder.unitConsumed;
+        this.isActive = builder.isActive;
+        this.isDeleted = builder.isDeleted;
+        this.userId = builder.userId;
     }
 
-    public Customer(String accountNumber, String name, String email, String phoneNumber, int unitConsumed, boolean isActive, boolean isDeleted, String userId) {
-        this.accountNumber = accountNumber;
-        this.name = name;
-        this.email = email;
-        this.phoneNumber = phoneNumber;
-        this.unitConsumed = unitConsumed;
-        this.isActive = isActive;
-        this.isDeleted = isDeleted;
-        this.userId = userId;
+    public static class Builder {
+        private String accountNumber;
+        private String name;
+        private String email;
+        private String phoneNumber;
+        private int unitConsumed;
+        private boolean isActive;
+        private boolean isDeleted;
+        private String userId;
+
+        public Builder accountNumber(String accountNumber) {
+            this.accountNumber = accountNumber;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
+            return this;
+        }
+
+        public Builder phoneNumber(String phoneNumber) {
+            this.phoneNumber = phoneNumber;
+            return this;
+        }
+
+        public Builder unitConsumed(int unitConsumed) {
+            this.unitConsumed = unitConsumed;
+            return this;
+        }
+
+        public Builder isActive(boolean isActive) {
+            this.isActive = isActive;
+            return this;
+        }
+
+        public Builder isDeleted(boolean isDeleted) {
+            this.isDeleted = isDeleted;
+            return this;
+        }
+
+        public Builder userId(String userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Customer build() {
+            return new Customer(this);
+        }
     }
 
     public String getAccountNumber() {
@@ -88,5 +143,28 @@ public class Customer {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+
+
+    @Override
+    public void createTable(Connection conn) {
+        String sql = """
+                    CREATE TABLE IF NOT EXISTS customer (
+                        accountNumber VARCHAR(50) PRIMARY KEY,
+                        name VARCHAR(100) NOT NULL,
+                        email VARCHAR(100),
+                        phoneNumber VARCHAR(20),
+                        unitConsumed INT DEFAULT 0,
+                        isActive BOOLEAN DEFAULT true,
+                        isDeleted BOOLEAN DEFAULT false,
+                        userId VARCHAR(50)
+                    )
+                """;
+        try {
+            conn.createStatement().execute(sql);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create customer table", e);
+        }
     }
 }
