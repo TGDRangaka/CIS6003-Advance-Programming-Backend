@@ -1,24 +1,28 @@
 package com.pahanaedu.librarymanagement.customer.mapping;
 
+import com.google.gson.Gson;
 import com.pahanaedu.librarymanagement.customer.dto.CustomerDTO;
 import com.pahanaedu.librarymanagement.customer.model.Customer;
 import com.pahanaedu.librarymanagement.util.UtilMatters;
 
+import java.util.ArrayList;
+
+import java.util.List;
+
 public class CustomerMapping {
-    public static CustomerDTO jsonToDto(String json) {
-        CustomerDTO dto = new CustomerDTO();
+    public static CustomerDTO toDto(String json) {
+        Gson gson = new Gson();
+        return gson.fromJson(json, CustomerDTO.class);
+    }
 
-        dto.setAccountNumber(UtilMatters.getJsonValue(json, "accountNumber"));
-        dto.setName(UtilMatters.getJsonValue(json, "name"));
-        dto.setEmail(UtilMatters.getJsonValue(json, "email"));
-        dto.setPhoneNumber(UtilMatters.getJsonValue(json, "phoneNumber"));
-        String unitConsumedStr = UtilMatters.getJsonValue(json, "unitConsumed");
-        String isActiveStr = UtilMatters.getJsonValue(json, "isActive");
+    public static String toJson(CustomerDTO dto) {
+        Gson gson = new Gson();
+        return gson.toJson(dto);
+    }
 
-        dto.setUnitConsumed(unitConsumedStr.isEmpty() ? 0 : Integer.parseInt(unitConsumedStr));
-        dto.setActive(isActiveStr.equalsIgnoreCase("true"));
-
-        return dto;
+    public static String toJsonArray(List<CustomerDTO> customers) {
+        Gson gson = new Gson();
+        return gson.toJson(customers);
     }
 
     public static CustomerDTO customerToDto(Customer customer) {
