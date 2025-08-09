@@ -29,13 +29,13 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public void update(Customer customer) throws SQLException {
+    public void update(Customer customer, String accountNumber) throws SQLException {
         try (Connection conn = DatabaseConfig.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(UPDATE_CUSTOMER_SQL)) {
             stmt.setString(1, customer.getName());
             stmt.setString(2, customer.getEmail());
             stmt.setString(3, customer.getPhoneNumber());
-            stmt.setString(4, customer.getAccountNumber());
+            stmt.setString(4, accountNumber);
             stmt.executeUpdate();
         }
     }

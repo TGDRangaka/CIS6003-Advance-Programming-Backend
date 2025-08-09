@@ -10,6 +10,6 @@ public interface CustomerService {
     List<CustomerDTO> getAll() throws SQLException;
     CustomerDTO getById(String accountNumber) throws SQLException;
     void addCustomer(CustomerDTO customer) throws SQLException;
-    void updateCustomer(CustomerDTO customer) throws SQLException;
+    void updateCustomer(CustomerDTO customer, String id) throws SQLException;
     void deleteCustomer(String accountNumber) throws SQLException;
 }
