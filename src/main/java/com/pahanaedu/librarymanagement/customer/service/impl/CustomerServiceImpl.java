@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CustomerServiceImpl implements CustomerService {
 
@@ -39,6 +40,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void addCustomer(CustomerDTO dto) throws SQLException {
+        dto.setAccountNumber(UUID.randomUUID().toString());
         Customer customer = CustomerMapping.dtoToCustomer(dto);
         customerDAO.save(customer);
     }
