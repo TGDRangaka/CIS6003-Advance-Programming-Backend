@@ -1,24 +1,26 @@
 package com.pahanaedu.librarymanagement.util;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+
 public class UtilMatters {
-    public static String getJsonValue(String json, String key) {
-        String searchKey = "\"" + key + "\"";
-        int keyIndex = json.indexOf(searchKey);
-
-        if (keyIndex == -1) return "";
-
-        int colonIndex = json.indexOf(":", keyIndex);
-        int valueStart = colonIndex + 1;
-
-        if (json.charAt(valueStart) == '"') {
-            int startQuote = valueStart + 1;
-            int endQuote = json.indexOf("\"", startQuote);
-            return json.substring(startQuote, endQuote);
+    public static String getJsonBody(HttpServletRequest request) throws IOException {
+        StringBuilder jsonBody = new StringBuilder();
+        try (BufferedReader reader = request.getReader()) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                jsonBody.append(line);
+            }
         }
-
-        int end = json.indexOf(",", valueStart);
-        if (end == -1) end = json.indexOf("}", valueStart);
-        return json.substring(valueStart, end).trim();
+        return jsonBody.toString();
     }
 
+    public static void handleError(HttpServletResponse resp, Exception e) throws IOException {
+        e.printStackTrace();
+        resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        resp.setContentType("application/json");
+        resp.getWriter().write("{\"error\": \"Something went wrong.\"}");
+    }
 }
