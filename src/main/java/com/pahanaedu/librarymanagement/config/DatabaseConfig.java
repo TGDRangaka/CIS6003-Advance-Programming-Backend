@@ -1,8 +1,12 @@
 package com.pahanaedu.librarymanagement.config;
 
+import com.pahanaedu.librarymanagement.customer.model.Customer;
+import com.pahanaedu.librarymanagement.schema.Entity;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class DatabaseConfig {
     private static final String DB_NAME = "library_management";
@@ -19,6 +23,15 @@ public class DatabaseConfig {
             // create database if not exist to avoid exceptions
             Connection tempConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/", DB_USER, DB_PASSWORD);
             tempConnection.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS " + DB_NAME);
+            tempConnection.createStatement().executeUpdate("USE " + DB_NAME);
+
+            // create tables
+            List<Entity> entities = List.of(new Customer());
+            for (Entity entity : entities) {
+                System.out.println("Creating table for entity: " + entity.getClass());
+                entity.createTable(tempConnection);
+            }
+
             tempConnection.close();
 
         } catch (ClassNotFoundException | SQLException e) {
