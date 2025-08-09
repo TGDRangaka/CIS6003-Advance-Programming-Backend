@@ -9,11 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
-    private static final String ADD_CUSTOMER_SQL = "INSERT INTO customer (accountNumber, name, email, phoneNumber, unitConsumed, isActive, isDeleted, userId) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-    private static final String GET_CUSTOMER_BY_ACCOUNT_SQL = "SELECT * FROM customer WHERE accountNumber = ?";
-    private static final String GET_ALL_CUSTOMERS_SQL = "SELECT * FROM customer";
-    private static final String UPDATE_CUSTOMER_SQL = "UPDATE customer SET name = ?, email = ?, phoneNumber = ?, unitConsumed = ?, isActive = ?, isDeleted = ?, userId = ? WHERE accountNumber = ?";
-    private static final String DELETE_CUSTOMER_SQL = "DELETE FROM customer WHERE accountNumber = ?";
+    private static final String ADD_CUSTOMER_SQL = "INSERT INTO customer (accountNumber, name, email, phoneNumber) VALUES (?, ?, ?, ?)";
+    private static final String GET_CUSTOMER_BY_ACCOUNT_SQL = "SELECT * FROM customer WHERE accountNumber = ? AND isDeleted = 0";
+    private static final String GET_ALL_CUSTOMERS_SQL = "SELECT * FROM customer WHERE isDeleted = 0 ORDER BY accountNumber ASC";
+    private static final String UPDATE_CUSTOMER_SQL = "UPDATE customer SET name = ?, email = ?, phoneNumber = ? WHERE accountNumber = ?";
+    private static final String TOGGLE_CUSTOMER_ACTIVE_SQL = "UPDATE customer SET isActive = NOT isActive WHERE accountNumber = ?";
+
+    private static final String DELETE_CUSTOMER_SQL = "UPDATE customer SET isDeleted = true WHERE accountNumber = ?";
 
     @Override
     public void addCustomer(Customer customer) throws SQLException {
@@ -23,10 +25,6 @@ public class CustomerDAOImpl implements CustomerDAO {
             stmt.setString(2, customer.getName());
             stmt.setString(3, customer.getEmail());
             stmt.setString(4, customer.getPhoneNumber());
-            stmt.setInt(5, customer.getUnitConsumed());
-            stmt.setBoolean(6, customer.isActive());
-            stmt.setBoolean(7, customer.isDeleted());
-            stmt.setString(8, customer.getUserId());
             stmt.executeUpdate();
         }
     }
@@ -86,11 +84,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             stmt.setString(1, customer.getName());
             stmt.setString(2, customer.getEmail());
             stmt.setString(3, customer.getPhoneNumber());
-            stmt.setInt(4, customer.getUnitConsumed());
-            stmt.setBoolean(5, customer.isActive());
-            stmt.setBoolean(6, customer.isDeleted());
-            stmt.setString(7, customer.getUserId());
-            stmt.setString(8, customer.getAccountNumber());
+            stmt.setString(4, customer.getAccountNumber());
             stmt.executeUpdate();
         }
     }
