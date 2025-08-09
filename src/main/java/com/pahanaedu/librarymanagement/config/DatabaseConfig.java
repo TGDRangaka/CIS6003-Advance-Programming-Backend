@@ -1,8 +1,12 @@
 package com.pahanaedu.librarymanagement.config;
 
+import com.pahanaedu.librarymanagement.customer.model.Customer;
+import com.pahanaedu.librarymanagement.schema.Entity;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.List;
 
 public class DatabaseConfig {
     private static final String DB_NAME = "library_management";
@@ -11,7 +15,6 @@ public class DatabaseConfig {
     private static final String DB_PASSWORD = "1234";
 
     private static final DatabaseConfig instance = new DatabaseConfig();
-    private static Connection connection;
 
     private DatabaseConfig() {
         try {
@@ -20,9 +23,16 @@ public class DatabaseConfig {
             // create database if not exist to avoid exceptions
             Connection tempConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/", DB_USER, DB_PASSWORD);
             tempConnection.createStatement().executeUpdate("CREATE DATABASE IF NOT EXISTS " + DB_NAME);
-            tempConnection.close();
+            tempConnection.createStatement().executeUpdate("USE " + DB_NAME);
 
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            // create tables
+            List<Entity> entities = List.of(new Customer());
+            for (Entity entity : entities) {
+                System.out.println("Creating table for entity: " + entity.getClass());
+                entity.createTable(tempConnection);
+            }
+
+            tempConnection.close();
 
         } catch (ClassNotFoundException | SQLException e) {
             throw new RuntimeException("Error initializing database!", e);
@@ -33,7 +43,7 @@ public class DatabaseConfig {
         return instance;
     }
 
-    public Connection getConnection() {
-        return connection;
+    public Connection getConnection() throws SQLException {
+        return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 }
