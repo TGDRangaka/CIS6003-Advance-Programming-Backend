@@ -46,9 +46,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomer(CustomerDTO dto) throws SQLException {
+    public void updateCustomer(CustomerDTO dto, String id) throws SQLException {
         Customer customer = CustomerMapping.dtoToCustomer(dto);
-        customerDAO.update(customer);
+        customerDAO.update(customer, id);
     }
 
     @Override

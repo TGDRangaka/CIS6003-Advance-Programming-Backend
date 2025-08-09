@@ -70,7 +70,7 @@ public class CustomerController extends HttpServlet {
             String json = UtilMatters.getJsonBody(req);
             CustomerDTO dto = CustomerMapping.toDto(json);
             dto.setAccountNumber(accountNumber);
-            customerService.updateCustomer(dto);
+            customerService.updateCustomer(dto, accountNumber);
 
             resp.getWriter().write("{\"message\": \"Customer updated\"}");
         } catch (Exception e) {

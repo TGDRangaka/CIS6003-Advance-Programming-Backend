@@ -1,6 +1,7 @@
 package com.pahanaedu.librarymanagement.config;
 
 import com.pahanaedu.librarymanagement.customer.model.Customer;
+import com.pahanaedu.librarymanagement.item.model.Item;
 import com.pahanaedu.librarymanagement.schema.Entity;
 
 import java.sql.Connection;
@@ -26,7 +27,7 @@ public class DatabaseConfig {
             tempConnection.createStatement().executeUpdate("USE " + DB_NAME);
 
             // create tables
-            List<Entity> entities = List.of(new Customer());
+            List<Entity> entities = List.of(new Customer(), new Item());
             for (Entity entity : entities) {
                 System.out.println("Creating table for entity: " + entity.getClass());
                 entity.createTable(tempConnection);
