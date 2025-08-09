@@ -11,6 +11,7 @@ import javax.servlet.ServletException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class CustomerServiceImpl implements CustomerService {
 
@@ -18,7 +19,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public List<CustomerDTO> getAll() throws SQLException {
-        List<Customer> customers = customerDAO.getAllCustomers();
+        List<Customer> customers = customerDAO.getAll();
         List<CustomerDTO> customerDTOList = new ArrayList<>();
 
         for (Customer customer : customers) {
@@ -30,7 +31,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO getById(String accountNumber) throws SQLException {
-        Customer customer = ((CustomerDAOImpl) customerDAO).getCustomerByAccountNumber(accountNumber);
+        Customer customer = ((CustomerDAOImpl) customerDAO).getById(accountNumber);
         if (customer != null) {
             return CustomerMapping.customerToDto(customer);
         }
@@ -39,18 +40,19 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void addCustomer(CustomerDTO dto) throws SQLException {
+        dto.setAccountNumber(UUID.randomUUID().toString());
         Customer customer = CustomerMapping.dtoToCustomer(dto);
-        customerDAO.addCustomer(customer);
+        customerDAO.save(customer);
     }
 
     @Override
     public void updateCustomer(CustomerDTO dto) throws SQLException {
         Customer customer = CustomerMapping.dtoToCustomer(dto);
-        customerDAO.updateCustomer(customer);
+        customerDAO.update(customer);
     }
 
     @Override
     public void deleteCustomer(String accountNumber) throws SQLException {
-        ((CustomerDAOImpl) customerDAO).deleteCustomerByAccountNumber(accountNumber);
+        ((CustomerDAOImpl) customerDAO).delete(accountNumber);
     }
 }
