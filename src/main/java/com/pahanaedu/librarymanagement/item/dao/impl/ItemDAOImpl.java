@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ItemDAOImpl implements ItemDAO {
-    private static final String INSERT_ITEM_SQL = "INSERT INTO item (id, name, author, category, availableCopies) VALUES (?, ?, ?, ?, ?)";
-    private static final String UPDATE_ITEM_SQL = "UPDATE item SET name = ?, author = ?, category = ?, availableCopies = ? WHERE id = ?";
+    private static final String INSERT_ITEM_SQL = "INSERT INTO item (id, name, category, qty, price) VALUES (?, ?, ?, ?, ?)";
+    private static final String UPDATE_ITEM_SQL = "UPDATE item SET name = ?, category = ?, qty = ?, price = ? WHERE id = ?";
     private static final String DELETE_ITEM_SQL = "DELETE FROM item WHERE id = ?";
     private static final String SELECT_ALL_ITEMS_SQL = "SELECT * FROM item";
     private static final String SELECT_ITEM_BY_ID_SQL = "SELECT * FROM item WHERE id = ?";
@@ -21,9 +21,9 @@ public class ItemDAOImpl implements ItemDAO {
              PreparedStatement stmt = conn.prepareStatement(INSERT_ITEM_SQL)) {
             stmt.setInt(1, entity.getId());
             stmt.setString(2, entity.getName());
-            stmt.setString(3, entity.getAuthor());
-            stmt.setString(4, entity.getCategory());
-            stmt.setInt(5, entity.getAvailableCopies());
+            stmt.setString(3, entity.getCategory());
+            stmt.setInt(4, entity.getQty());
+            stmt.setDouble(5, entity.getPrice());
             stmt.executeUpdate();
         }
     }
@@ -33,9 +33,9 @@ public class ItemDAOImpl implements ItemDAO {
         try (Connection conn = DatabaseConfig.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(UPDATE_ITEM_SQL)) {
             stmt.setString(1, entity.getName());
-            stmt.setString(2, entity.getAuthor());
-            stmt.setString(3, entity.getCategory());
-            stmt.setInt(4, entity.getAvailableCopies());
+            stmt.setString(2, entity.getCategory());
+            stmt.setInt(3, entity.getQty());
+            stmt.setDouble(4, entity.getPrice());
             stmt.setInt(5, id);
             stmt.executeUpdate();
         }
@@ -60,9 +60,9 @@ public class ItemDAOImpl implements ItemDAO {
                 items.add(new Item.Builder()
                         .id(rs.getInt("id"))
                         .name(rs.getString("name"))
-                        .author(rs.getString("author"))
                         .category(rs.getString("category"))
-                        .availableCopies(rs.getInt("availableCopies"))
+                        .qty(rs.getInt("qty"))
+                        .price(rs.getDouble("price"))
                         .build()
                 );
             }
@@ -80,9 +80,9 @@ public class ItemDAOImpl implements ItemDAO {
                 return new Item.Builder()
                         .id(rs.getInt("id"))
                         .name(rs.getString("name"))
-                        .author(rs.getString("author"))
                         .category(rs.getString("category"))
-                        .availableCopies(rs.getInt("availableCopies"))
+                        .qty(rs.getInt("qty"))
+                        .price(rs.getDouble("price"))
                         .build();
             }
         }

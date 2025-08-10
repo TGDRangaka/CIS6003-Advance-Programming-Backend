@@ -12,9 +12,9 @@ public class ItemMapping {
         return new ItemDTO(
                 item.getId(),
                 item.getName(),
-                item.getAuthor(),
                 item.getCategory(),
-                item.getAvailableCopies()
+                item.getQty(),
+                item.getPrice()
         );
     }
 
@@ -25,9 +25,9 @@ public class ItemMapping {
         return new Item.Builder()
                 .id(dto.getId())
                 .name(dto.getName())
-                .author(dto.getAuthor())
                 .category(dto.getCategory())
-                .availableCopies(dto.getAvailableCopies())
+                .qty(dto.getQty())
+                .price(dto.getPrice())
                 .build();
     }
 }
