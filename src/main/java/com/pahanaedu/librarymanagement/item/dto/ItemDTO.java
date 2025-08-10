@@ -3,19 +3,19 @@ package com.pahanaedu.librarymanagement.item.dto;
 public class ItemDTO {
     private int id;
     private String name;
-    private String author;
     private String category;
-    private int availableCopies;
+    private int qty;
+    private double price;
 
     public ItemDTO() {
     }
 
-    public ItemDTO(int id, String name, String author, String category, int availableCopies) {
+    public ItemDTO(int id, String name, String category, int qty, double price) {
         this.id = id;
         this.name = name;
-        this.author = author;
         this.category = category;
-        this.availableCopies = availableCopies;
+        this.qty = qty;
+        this.price = price;
     }
 
     public int getId() {
@@ -34,14 +34,6 @@ public class ItemDTO {
         this.name = name;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -50,11 +42,19 @@ public class ItemDTO {
         this.category = category;
     }
 
-    public int getAvailableCopies() {
-        return availableCopies;
+    public int getQty() {
+        return qty;
     }
 
-    public void setAvailableCopies(int availableCopies) {
-        this.availableCopies = availableCopies;
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

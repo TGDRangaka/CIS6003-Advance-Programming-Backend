@@ -7,30 +7,30 @@ import java.sql.Connection;
 public class Item implements Entity {
     private int id;
     private String name;
-    private String author;
     private String category;
-    private int availableCopies;
+    private int qty;
+    private double price;
 
     // NoArgs constructor
     public Item() {
     }
 
     // AllArgs constructor
-    public Item(int id, String name, String author, String category, int availableCopies) {
+    public Item(int id, String name, String category, int qty, double price) {
         this.id = id;
         this.name = name;
-        this.author = author;
         this.category = category;
-        this.availableCopies = availableCopies;
+        this.qty = qty;
+        this.price = price;
     }
 
     // Builder pattern
     public static class Builder {
         private int id;
         private String name;
-        private String author;
         private String category;
-        private int availableCopies;
+        private int qty;
+        private double price;
 
         public Builder id(int id) {
             this.id = id;
@@ -42,23 +42,23 @@ public class Item implements Entity {
             return this;
         }
 
-        public Builder author(String author) {
-            this.author = author;
-            return this;
-        }
-
         public Builder category(String category) {
             this.category = category;
             return this;
         }
 
-        public Builder availableCopies(int availableCopies) {
-            this.availableCopies = availableCopies;
+        public Builder qty(int qty) {
+            this.qty = qty;
+            return this;
+        }
+
+        public Builder price(double price) {
+            this.price = price;
             return this;
         }
 
         public Item build() {
-            return new Item(id, name, author, category, availableCopies);
+            return new Item(id, name, category, qty, price);
         }
     }
 
@@ -79,14 +79,6 @@ public class Item implements Entity {
         this.name = name;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
     public String getCategory() {
         return category;
     }
@@ -95,12 +87,20 @@ public class Item implements Entity {
         this.category = category;
     }
 
-    public int getAvailableCopies() {
-        return availableCopies;
+    public int getQty() {
+        return qty;
     }
 
-    public void setAvailableCopies(int availableCopies) {
-        this.availableCopies = availableCopies;
+    public void setQty(int qty) {
+        this.qty = qty;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     @Override
@@ -109,9 +109,9 @@ public class Item implements Entity {
                 CREATE TABLE IF NOT EXISTS item (
                     id INT PRIMARY KEY AUTO_INCREMENT,
                     name VARCHAR(100) NOT NULL,
-                    author VARCHAR(100),
                     category VARCHAR(50),
-                    availableCopies INT DEFAULT 0
+                    qty INT DEFAULT 0,
+                    price DOUBLE DEFAULT 0.0
                 )
                 """;
         try {
