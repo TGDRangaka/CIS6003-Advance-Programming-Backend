@@ -10,7 +10,7 @@ import java.util.List;
 public class Bill implements Entity {
     private String billId;
     private String accountNumber;
-    private LocalDateTime billDate;
+    private String billDate;
     private double total;
     private List<BillItem> items;
 
@@ -19,7 +19,7 @@ public class Bill implements Entity {
     }
 
     // All-args constructor
-    public Bill(String billId, String accountNumber, LocalDateTime billDate, double total, List<BillItem> items) {
+    public Bill(String billId, String accountNumber, String billDate, double total, List<BillItem> items) {
         this.billId = billId;
         this.accountNumber = accountNumber;
         this.billDate = billDate;
@@ -31,7 +31,7 @@ public class Bill implements Entity {
     public static class Builder {
         private String billId;
         private String accountNumber;
-        private LocalDateTime billDate;
+        private String billDate;
         private double total;
         private List<BillItem> items;
 
@@ -45,7 +45,7 @@ public class Bill implements Entity {
             return this;
         }
 
-        public Builder billDate(LocalDateTime billDate) {
+        public Builder billDate(String billDate) {
             this.billDate = billDate;
             return this;
         }
@@ -57,6 +57,11 @@ public class Bill implements Entity {
 
         public Builder items(List<BillItem> items) {
             this.items = items;
+            return this;
+        }
+
+        public Builder item(BillItem item) {
+            this.items.add(item);
             return this;
         }
 
@@ -82,11 +87,11 @@ public class Bill implements Entity {
         this.accountNumber = accountNumber;
     }
 
-    public LocalDateTime getBillDate() {
+    public String getBillDate() {
         return billDate;
     }
 
-    public void setBillDate(LocalDateTime billDate) {
+    public void setBillDate(String billDate) {
         this.billDate = billDate;
     }
 

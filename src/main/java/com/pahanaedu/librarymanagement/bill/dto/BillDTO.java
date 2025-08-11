@@ -6,7 +6,7 @@ import java.util.List;
 public class BillDTO {
     private String billId;
     private String accountNumber;
-    private LocalDateTime billDate;
+    private String billDate;
     private double total;
     private List<BillItemDTO> items;
 
@@ -15,7 +15,7 @@ public class BillDTO {
     }
 
     // All-args constructor
-    public BillDTO(String billId, String accountNumber, LocalDateTime billDate, double total, List<BillItemDTO> items) {
+    public BillDTO(String billId, String accountNumber, String billDate, double total, List<BillItemDTO> items) {
         this.billId = billId;
         this.accountNumber = accountNumber;
         this.billDate = billDate;
@@ -40,11 +40,11 @@ public class BillDTO {
         this.accountNumber = accountNumber;
     }
 
-    public LocalDateTime getBillDate() {
+    public String getBillDate() {
         return billDate;
     }
 
-    public void setBillDate(LocalDateTime billDate) {
+    public void setBillDate(String billDate) {
         this.billDate = billDate;
     }
 
