@@ -5,6 +5,7 @@ import com.pahanaedu.bookshopmanagement.bill.model.BillItem;
 import com.pahanaedu.bookshopmanagement.customer.model.Customer;
 import com.pahanaedu.bookshopmanagement.item.model.Item;
 import com.pahanaedu.bookshopmanagement.schema.Entity;
+import com.pahanaedu.bookshopmanagement.user.model.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -29,7 +30,7 @@ public class DatabaseConfig {
             tempConnection.createStatement().executeUpdate("USE " + DB_NAME);
 
             // create tables
-            List<Entity> entities = List.of(new Customer(), new Item(), new Bill(), new BillItem());
+            List<Entity> entities = List.of(new User(), new Customer(), new Item(), new Bill(), new BillItem());
             for (Entity entity : entities) {
                 System.out.println("Creating table for entity: " + entity.getClass());
                 entity.createTable(tempConnection);
