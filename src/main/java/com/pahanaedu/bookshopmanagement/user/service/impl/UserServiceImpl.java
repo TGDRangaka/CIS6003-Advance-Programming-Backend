@@ -1,6 +1,7 @@
 package com.pahanaedu.bookshopmanagement.user.service.impl;
 
 import com.pahanaedu.bookshopmanagement.user.dao.UserDAO;
+import com.pahanaedu.bookshopmanagement.user.dao.impl.UserDAOImpl;
 import com.pahanaedu.bookshopmanagement.user.dto.UserDTO;
 import com.pahanaedu.bookshopmanagement.user.mapping.UserMapper;
 import com.pahanaedu.bookshopmanagement.user.service.UserService;
@@ -12,8 +13,8 @@ public class UserServiceImpl implements UserService {
     private final UserDAO userDAO;
     private static final UserMapper userMapper = new UserMapper();
 
-    public UserServiceImpl(UserDAO userDAO) {
-        this.userDAO = userDAO;
+    public UserServiceImpl() {
+        this.userDAO = new UserDAOImpl();
     }
 
     @Override
