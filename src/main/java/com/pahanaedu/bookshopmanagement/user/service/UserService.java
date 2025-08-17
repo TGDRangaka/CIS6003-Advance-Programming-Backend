@@ -12,5 +12,5 @@ public interface UserService {
     void delete(Integer id) throws SQLException;
     List<UserDTO> getAll() throws SQLException;
     UserDTO getById(Integer id) throws SQLException;
-    boolean isUserExist(String email, String password) throws SQLException;
+    UserDTO isUserExist(String email, String password) throws SQLException;
 }

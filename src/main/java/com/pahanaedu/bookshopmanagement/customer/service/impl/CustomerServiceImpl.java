@@ -40,6 +40,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void addCustomer(CustomerDTO dto) throws SQLException {
         dto.setAccountNumber(UUID.randomUUID().toString());
+        dto.setActive(true);
+        dto.setUnitConsumed(0);
         Customer customer = CustomerMapping.dtoToCustomer(dto);
         customerDAO.save(customer);
     }

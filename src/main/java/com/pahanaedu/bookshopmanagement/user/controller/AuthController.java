@@ -1,5 +1,7 @@
 package com.pahanaedu.bookshopmanagement.user.controller;
 
+import com.google.gson.Gson;
+import com.pahanaedu.bookshopmanagement.user.dto.UserDTO;
 import com.pahanaedu.bookshopmanagement.user.service.UserService;
 import com.pahanaedu.bookshopmanagement.user.service.impl.UserServiceImpl;
 
@@ -26,14 +28,34 @@ public class AuthController extends HttpServlet {
             String password = req.getParameter("password");
 
             try {
-                boolean isAuthenticated = userService.isUserExist(email, password);
-                if (isAuthenticated) {
+                UserDTO userExist = userService.isUserExist(email, password);
+                if (userExist != null) {
                     resp.setStatus(HttpServletResponse.SC_OK);
-                    resp.getWriter().write("{\"message\": \"Login successful\"}");
+                    resp.getWriter().write(new Gson().toJson(userExist));
                 } else {
                     resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                     resp.getWriter().write("{\"error\": \"Invalid email or password\"}");
                 }
+            } catch (Exception e) {
+                resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                resp.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
+            }
+        } else {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            resp.getWriter().write("{\"error\": \"Endpoint not found\"}");
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String pathInfo = req.getPathInfo();
+        if (pathInfo != null && pathInfo.equals("/register")) {
+            Gson gson = new Gson();
+            UserDTO userDTO = gson.fromJson(req.getReader(), UserDTO.class);
+
+            try {
+                userService.save(userDTO);
+                resp.getWriter().write("{\"message\": \"Registration successful\"}");
             } catch (Exception e) {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 resp.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
