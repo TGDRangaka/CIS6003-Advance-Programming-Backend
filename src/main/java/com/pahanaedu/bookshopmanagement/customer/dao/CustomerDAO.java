@@ -13,4 +13,5 @@ public interface CustomerDAO extends SuperDAO<Customer, String> {
 //    void updateCustomer(Customer customer) throws SQLException;
 //    void deleteCustomer(int id) throws SQLException;
     void updateUnics(String accountNumber, int unitConsumed, Connection con) throws SQLException;
+    boolean isAccountNumberExist(String accountNumber) throws SQLException;
 }

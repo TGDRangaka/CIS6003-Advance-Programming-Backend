@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "customerController", value = "/customer")
+@WebServlet(name = "customerController", value = "/customer/*")
 public class CustomerController extends HttpServlet {
 
     private final CustomerService customerService = new CustomerServiceImpl();
@@ -23,10 +23,16 @@ public class CustomerController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String accountNumber = req.getParameter("accountNumber");
+            String pathInfo = req.getPathInfo();
 
             resp.setContentType("application/json");
 
             if (accountNumber != null) {
+                if(pathInfo != null && pathInfo.equals("/is-exist")) {
+                    boolean exists = customerService.isAccountNumberExist(accountNumber);
+                    resp.getWriter().write("{\"exists\": " + exists + "}");
+                    return;
+                }
                 CustomerDTO dto = customerService.getById(accountNumber);
                 if (dto != null) {
                     resp.getWriter().write(CustomerMapping.toJson(dto));

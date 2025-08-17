@@ -11,4 +11,5 @@ public interface CustomerService {
     void addCustomer(CustomerDTO customer) throws SQLException;
     void updateCustomer(CustomerDTO customer, String id) throws SQLException;
     void deleteCustomer(String accountNumber) throws SQLException;
+    boolean isAccountNumberExist(String accountNumber) throws SQLException;
 }
