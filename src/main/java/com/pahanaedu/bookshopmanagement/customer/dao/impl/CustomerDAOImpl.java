@@ -15,6 +15,7 @@ public class CustomerDAOImpl implements CustomerDAO {
     private static final String UPDATE_CUSTOMER_SQL = "UPDATE customer SET name = ?, email = ?, phoneNumber = ? WHERE accountNumber = ?";
     private static final String TOGGLE_CUSTOMER_ACTIVE_SQL = "UPDATE customer SET isActive = NOT isActive WHERE accountNumber = ?";
     private static final String DELETE_CUSTOMER_SQL = "UPDATE customer SET isDeleted = true WHERE accountNumber = ?";
+    private static final String UPDATE_UNIT_CONSUMED_SQL = "UPDATE customer SET unitConsumed = unitConsumed + ? WHERE accountNumber = ?";
 
     @Override
     public void save(Customer customer) throws SQLException {
@@ -91,5 +92,13 @@ public class CustomerDAOImpl implements CustomerDAO {
             }
         }
         return null;
+    }
+
+    @Override
+    public void updateUnics(String accountNumber, int unitConsumed, Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement(UPDATE_UNIT_CONSUMED_SQL);
+        stmt.setInt(1, unitConsumed);
+        stmt.setString(2, accountNumber);
+        stmt.executeUpdate();
     }
 }
