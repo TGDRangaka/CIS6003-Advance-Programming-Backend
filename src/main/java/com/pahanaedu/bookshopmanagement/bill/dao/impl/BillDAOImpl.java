@@ -4,6 +4,8 @@ import com.pahanaedu.bookshopmanagement.bill.dao.BillDAO;
 import com.pahanaedu.bookshopmanagement.bill.model.Bill;
 import com.pahanaedu.bookshopmanagement.bill.model.BillItem;
 import com.pahanaedu.bookshopmanagement.config.DatabaseConfig;
+import com.pahanaedu.bookshopmanagement.customer.dao.CustomerDAO;
+import com.pahanaedu.bookshopmanagement.customer.dao.impl.CustomerDAOImpl;
 
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 public class BillDAOImpl implements BillDAO {
+    private final CustomerDAO customerDAO;
 
     private static final String INSERT_BILL_SQL = "INSERT INTO bill (bill_id, accountNumber, bill_date, total) VALUES (?, ?, ?, ?)";
     private static final String UPDATE_BILL_SQL = "UPDATE bill SET accountNumber = ?, bill_date = ?, total = ? WHERE bill_id = ?";
@@ -35,6 +38,11 @@ public class BillDAOImpl implements BillDAO {
             """;
 
     private static final String INSERT_BILL_ITEM_SQL = "INSERT INTO bill_item (bill_item_id, bill_id, item_id, qty, price) VALUES (?, ?, ?, ?, ?)";
+
+
+    public BillDAOImpl() {
+        this.customerDAO = new CustomerDAOImpl();
+    }
 
     @Override
     public void save(Bill entity) throws SQLException {
@@ -67,6 +75,14 @@ public class BillDAOImpl implements BillDAO {
                     }
                     itemStmt.executeBatch();
                 }
+            }
+
+            // Update customer unit consumed if applicable
+            if (entity.getAccountNumber() != null && entity.getItems() != null) {
+                int totalQty = entity.getItems().stream().mapToInt(BillItem::getQty).sum();
+                customerDAO.updateUnics(entity.getAccountNumber(), totalQty, conn);
+            } else {
+                throw new SQLException("Bill must have an account number and items to update customer unit consumed.");
             }
 
             conn.commit(); // Commit transaction
