@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet(name = "authController", value = "/auth/*")
 public class AuthController extends HttpServlet {
@@ -56,6 +57,15 @@ public class AuthController extends HttpServlet {
             try {
                 userService.save(userDTO);
                 resp.getWriter().write("{\"message\": \"Registration successful\"}");
+            } catch (SQLException e){
+                // check is duplicate email
+                if (e.getMessage().contains("Duplicate entry")) {
+                    resp.setStatus(HttpServletResponse.SC_CONFLICT);
+                    resp.getWriter().write("{\"error\": \"Email already exists\"}");
+                } else {
+                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                    resp.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
+                }
             } catch (Exception e) {
                 resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 resp.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
