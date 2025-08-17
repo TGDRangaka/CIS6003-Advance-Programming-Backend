@@ -15,7 +15,7 @@ public class UserDAOImpl implements UserDAO {
     private static final String DELETE_SQL = "DELETE FROM users WHERE user_id = ?";
     private static final String SELECT_ALL_SQL = "SELECT * FROM users";
     private static final String SELECT_BY_ID_SQL = "SELECT * FROM users WHERE user_id = ?";
-    private static final String CHECK_USER_SQL = "SELECT COUNT(*) FROM users WHERE email = ? AND password = ?";
+    private static final String CHECK_USER_SQL = "SELECT * FROM users WHERE email = ? AND password = ?";
 
     @Override
     public void save(User entity) throws SQLException {
@@ -87,16 +87,21 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public boolean isUserExist(String email, String password) throws SQLException {
+    public User isUserExist(String email, String password) throws SQLException {
         try (Connection conn = DatabaseConfig.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(CHECK_USER_SQL)) {
             ps.setString(1, email);
             ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0;
+                return User.builder()
+                        .userId(rs.getInt("user_id"))
+                        .name(rs.getString("name"))
+                        .email(rs.getString("email"))
+                        .password(rs.getString("password"))
+                        .build();
             }
         }
-        return false;
+        return null;
     }
 }

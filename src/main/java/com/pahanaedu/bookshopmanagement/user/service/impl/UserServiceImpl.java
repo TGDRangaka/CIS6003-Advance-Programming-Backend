@@ -4,6 +4,7 @@ import com.pahanaedu.bookshopmanagement.user.dao.UserDAO;
 import com.pahanaedu.bookshopmanagement.user.dao.impl.UserDAOImpl;
 import com.pahanaedu.bookshopmanagement.user.dto.UserDTO;
 import com.pahanaedu.bookshopmanagement.user.mapping.UserMapper;
+import com.pahanaedu.bookshopmanagement.user.model.User;
 import com.pahanaedu.bookshopmanagement.user.service.UserService;
 
 import java.sql.SQLException;
@@ -43,7 +44,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean isUserExist(String email, String password) throws SQLException {
-        return userDAO.isUserExist(email, password);
+    public UserDTO isUserExist(String email, String password) throws SQLException {
+        User userExist = userDAO.isUserExist(email, password);
+        if (userExist != null) {
+            return userMapper.toDTO(userExist);
+        }
+        return null;
     }
 }
