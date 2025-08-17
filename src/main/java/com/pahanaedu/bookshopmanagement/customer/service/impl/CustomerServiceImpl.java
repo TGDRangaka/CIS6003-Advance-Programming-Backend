@@ -56,4 +56,9 @@ public class CustomerServiceImpl implements CustomerService {
     public void deleteCustomer(String accountNumber) throws SQLException {
         ((CustomerDAOImpl) customerDAO).delete(accountNumber);
     }
+
+    @Override
+    public boolean isAccountNumberExist(String accountNumber) throws SQLException {
+        return customerDAO.isAccountNumberExist(accountNumber);
+    }
 }

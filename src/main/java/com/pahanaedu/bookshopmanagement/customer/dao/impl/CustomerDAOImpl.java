@@ -101,4 +101,14 @@ public class CustomerDAOImpl implements CustomerDAO {
         stmt.setString(2, accountNumber);
         stmt.executeUpdate();
     }
+
+    @Override
+    public boolean isAccountNumberExist(String accountNumber) throws SQLException {
+        try (Connection conn = DatabaseConfig.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(GET_CUSTOMER_BY_ACCOUNT_SQL)) {
+            stmt.setString(1, accountNumber);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        }
+    }
 }
