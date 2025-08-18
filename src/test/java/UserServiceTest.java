@@ -1,7 +1,6 @@
-import com.pahanaedu.bookshopmanagement.user.dto.UserDTO;
-import com.pahanaedu.bookshopmanagement.user.model.User;
-import com.pahanaedu.bookshopmanagement.user.service.UserService;
-import com.pahanaedu.bookshopmanagement.user.service.impl.UserServiceImpl;
+import com.pahanaedu.bookshopmanagement.business.user.dto.UserDTO;
+import com.pahanaedu.bookshopmanagement.business.user.service.UserService;
+import com.pahanaedu.bookshopmanagement.business.user.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
