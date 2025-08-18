@@ -1,11 +1,11 @@
 package com.pahanaedu.bookshopmanagement.config;
 
-import com.pahanaedu.bookshopmanagement.bill.model.Bill;
-import com.pahanaedu.bookshopmanagement.bill.model.BillItem;
-import com.pahanaedu.bookshopmanagement.customer.model.Customer;
-import com.pahanaedu.bookshopmanagement.item.model.Item;
+import com.pahanaedu.bookshopmanagement.business.bill.model.Bill;
+import com.pahanaedu.bookshopmanagement.business.bill.model.BillItem;
+import com.pahanaedu.bookshopmanagement.business.customer.model.Customer;
+import com.pahanaedu.bookshopmanagement.business.item.model.Item;
 import com.pahanaedu.bookshopmanagement.schema.Entity;
-import com.pahanaedu.bookshopmanagement.user.model.User;
+import com.pahanaedu.bookshopmanagement.business.user.model.User;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

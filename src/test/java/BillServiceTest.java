@@ -1,5 +1,5 @@
-import com.pahanaedu.bookshopmanagement.bill.model.Bill;
-import com.pahanaedu.bookshopmanagement.bill.model.BillItem;
+import com.pahanaedu.bookshopmanagement.business.bill.model.Bill;
+import com.pahanaedu.bookshopmanagement.business.bill.model.BillItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

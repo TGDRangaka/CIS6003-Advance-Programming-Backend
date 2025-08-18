@@ -1,7 +1,6 @@
-import com.pahanaedu.bookshopmanagement.item.dto.ItemDTO;
-import com.pahanaedu.bookshopmanagement.item.model.Item;
-import com.pahanaedu.bookshopmanagement.item.service.ItemService;
-import com.pahanaedu.bookshopmanagement.item.service.impl.ItemServiceImpl;
+import com.pahanaedu.bookshopmanagement.business.item.dto.ItemDTO;
+import com.pahanaedu.bookshopmanagement.business.item.service.ItemService;
+import com.pahanaedu.bookshopmanagement.business.item.service.impl.ItemServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
