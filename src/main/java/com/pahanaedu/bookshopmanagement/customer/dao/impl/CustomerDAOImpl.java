@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CustomerDAOImpl implements CustomerDAO {
-    private static final String ADD_CUSTOMER_SQL = "INSERT INTO customer (accountNumber, name, email, phoneNumber) VALUES (?, ?, ?, ?)";
+    private static final String ADD_CUSTOMER_SQL = "INSERT INTO customer (accountNumber, name, email, phoneNumber, userId) VALUES (?, ?, ?, ?, ?)";
     private static final String GET_CUSTOMER_BY_ACCOUNT_SQL = "SELECT * FROM customer WHERE accountNumber = ? AND isDeleted = 0";
     private static final String GET_ALL_CUSTOMERS_SQL = "SELECT * FROM customer WHERE isDeleted = 0 ORDER BY accountNumber ASC";
     private static final String UPDATE_CUSTOMER_SQL = "UPDATE customer SET name = ?, email = ?, phoneNumber = ? WHERE accountNumber = ?";
@@ -25,6 +25,7 @@ public class CustomerDAOImpl implements CustomerDAO {
             stmt.setString(2, customer.getName());
             stmt.setString(3, customer.getEmail());
             stmt.setString(4, customer.getPhoneNumber());
+            stmt.setInt(5, customer.getUserId());
             stmt.executeUpdate();
         }
     }
@@ -65,7 +66,7 @@ public class CustomerDAOImpl implements CustomerDAO {
                         .unitConsumed(rs.getInt("unitConsumed"))
                         .isActive(rs.getBoolean("isActive"))
                         .isDeleted(rs.getBoolean("isDeleted"))
-                        .userId(rs.getString("userId"))
+                        .userId(rs.getInt("userId"))
                         .build());
             }
         }
@@ -87,7 +88,7 @@ public class CustomerDAOImpl implements CustomerDAO {
                         .unitConsumed(rs.getInt("unitConsumed"))
                         .isActive(rs.getBoolean("isActive"))
                         .isDeleted(rs.getBoolean("isDeleted"))
-                        .userId(rs.getString("userId"))
+                        .userId(rs.getInt("userId"))
                         .build();
             }
         }

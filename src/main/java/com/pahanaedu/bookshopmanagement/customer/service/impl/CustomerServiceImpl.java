@@ -38,10 +38,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void addCustomer(CustomerDTO dto) throws SQLException {
+    public void addCustomer(CustomerDTO dto, int userId) throws SQLException {
         dto.setActive(true);
         dto.setUnitConsumed(0);
         Customer customer = CustomerMapping.dtoToCustomer(dto);
+        customer.setUserId(userId);
         customerDAO.save(customer);
     }
 
