@@ -12,7 +12,7 @@ public class Customer implements Entity {
     private int unitConsumed;
     private boolean isActive;
     private boolean isDeleted;
-    private String userId;
+    private int userId;
 
     public Customer() {}
 
@@ -35,7 +35,7 @@ public class Customer implements Entity {
         private int unitConsumed;
         private boolean isActive;
         private boolean isDeleted;
-        private String userId;
+        private int userId;
 
         public Builder accountNumber(String accountNumber) {
             this.accountNumber = accountNumber;
@@ -72,7 +72,7 @@ public class Customer implements Entity {
             return this;
         }
 
-        public Builder userId(String userId) {
+        public Builder userId(int userId) {
             this.userId = userId;
             return this;
         }
@@ -138,11 +138,11 @@ public class Customer implements Entity {
         isDeleted = deleted;
     }
 
-    public String getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
@@ -159,7 +159,7 @@ public class Customer implements Entity {
                         unitConsumed INT DEFAULT 0,
                         isActive BOOLEAN DEFAULT true,
                         isDeleted BOOLEAN DEFAULT false,
-                        userId VARCHAR(50)
+                        userId INT
                     )
                 """;
         try {

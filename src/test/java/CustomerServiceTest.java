@@ -28,7 +28,7 @@ public class CustomerServiceTest {
         c.setUnitConsumed(0);
         c.setActive(true);
 
-        customerService.addCustomer(c);
+        customerService.addCustomer(c, 1);
         CustomerDTO saved = customerService.getById("CUST003");
 
         assertNotNull(saved);

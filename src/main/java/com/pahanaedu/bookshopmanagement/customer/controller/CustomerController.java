@@ -7,6 +7,7 @@ import com.pahanaedu.bookshopmanagement.customer.service.impl.CustomerServiceImp
 import com.pahanaedu.bookshopmanagement.util.UtilMatters;
 
 import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -52,9 +53,13 @@ public class CustomerController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            // catch userid from param
+            String userId = req.getParameter("userId");
+            System.out.println("User ID: " + userId);
+
             String json = UtilMatters.getJsonBody(req);
             CustomerDTO dto = CustomerMapping.toDto(json);
-            customerService.addCustomer(dto);
+            customerService.addCustomer(dto, Integer.parseInt(userId));
 
             resp.setStatus(HttpServletResponse.SC_CREATED);
             resp.getWriter().write("{\"message\": \"Customer created\"}");
