@@ -1,0 +1,107 @@
+package com.pahanaedu.bookshopmanagement.business.customer.controller;
+
+import com.pahanaedu.bookshopmanagement.business.customer.dto.CustomerDTO;
+import com.pahanaedu.bookshopmanagement.business.customer.mapping.CustomerMapping;
+import com.pahanaedu.bookshopmanagement.business.customer.service.CustomerService;
+import com.pahanaedu.bookshopmanagement.business.customer.service.impl.CustomerServiceImpl;
+import com.pahanaedu.bookshopmanagement.util.UtilMatters;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.List;
+
+@WebServlet(name = "customerController", value = "/customer/*")
+public class CustomerController extends HttpServlet {
+
+    private final CustomerService customerService = new CustomerServiceImpl();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String accountNumber = req.getParameter("accountNumber");
+            String pathInfo = req.getPathInfo();
+
+            resp.setContentType("application/json");
+
+            if (accountNumber != null) {
+                if(pathInfo != null && pathInfo.equals("/is-exist")) {
+                    boolean exists = customerService.isAccountNumberExist(accountNumber);
+                    resp.getWriter().write("{\"exists\": " + exists + "}");
+                    return;
+                }
+                CustomerDTO dto = customerService.getById(accountNumber);
+                if (dto != null) {
+                    resp.getWriter().write(CustomerMapping.toJson(dto));
+                } else {
+                    resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+                    resp.getWriter().write("{\"error\": \"Customer not found\"}");
+                }
+            } else {
+                List<CustomerDTO> customers = customerService.getAll();
+                resp.getWriter().write(CustomerMapping.toJsonArray(customers));
+            }
+        } catch (Exception e) {
+            UtilMatters.handleError(resp, e);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            // catch userid from param
+            String userId = req.getParameter("userId");
+            System.out.println("User ID: " + userId);
+
+            String json = UtilMatters.getJsonBody(req);
+            CustomerDTO dto = CustomerMapping.toDto(json);
+            customerService.addCustomer(dto, Integer.parseInt(userId));
+
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+            resp.getWriter().write("{\"message\": \"Customer created\"}");
+        } catch (Exception e) {
+            UtilMatters.handleError(resp, e);
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String accountNumber = req.getParameter("accountNumber");
+            if (accountNumber == null) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("{\"error\": \"accountNumber is required\"}");
+                return;
+            }
+
+            String json = UtilMatters.getJsonBody(req);
+            CustomerDTO dto = CustomerMapping.toDto(json);
+            dto.setAccountNumber(accountNumber);
+            customerService.updateCustomer(dto, accountNumber);
+
+            resp.getWriter().write("{\"message\": \"Customer updated\"}");
+        } catch (Exception e) {
+            UtilMatters.handleError(resp, e);
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            String accountNumber = req.getParameter("accountNumber");
+            if (accountNumber == null) {
+                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                resp.getWriter().write("{\"error\": \"accountNumber is required\"}");
+                return;
+            }
+
+            customerService.deleteCustomer(accountNumber);
+            resp.getWriter().write("{\"message\": \"Customer deleted\"}");
+        } catch (Exception e) {
+            UtilMatters.handleError(resp, e);
+        }
+    }
+}

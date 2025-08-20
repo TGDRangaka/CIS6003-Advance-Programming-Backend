@@ -1,4 +1,4 @@
-package com.pahanaedu.librarymanagement;
+package com.pahanaedu.bookshopmanagement;
 
 import java.io.*;
 import javax.servlet.http.*;
